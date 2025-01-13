@@ -1,8 +1,6 @@
 #ifndef BANK_H
 #define BANK_H
 
-#include <iostream>
-#include <map>
 class BankAccount;
 
 class Bank
