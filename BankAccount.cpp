@@ -13,3 +13,7 @@ int BankAccount::getBalance()
 {
     return balance;
 }
+int BankAccount::getUserID()
+{
+    return userID;
+}
