@@ -2,9 +2,12 @@
 #include <map>
 #include "BankAccount.h"
 #include "Bank.h"
+#include "random.h"
 
-void Bank::addBankAccount(int amount)
+// this function is currently inefficient and can be reworked.
+void Bank::addBankAccount()
 {
+    int amount = randomAmount();
     int id;
     // Exists so that a new key/id value is always generated for the map whenever inserting a user.
     for (std::map<int, BankAccount>::iterator it = BankAccounts.begin(); it != BankAccounts.end(); ++it)
@@ -19,12 +22,9 @@ void Bank::addBankAccount(int amount)
 }
 void Bank::displayBankAccount(int id)
 {
-    for (std::map<int, BankAccount>::iterator it = BankAccounts.begin(); it != BankAccounts.end(); ++it)
+    auto it = BankAccounts.find(id);
+    if (it != BankAccounts.end())
     {
-        int key = it->first;
-        if (key == id)
-        {
-            std::cout << BankAccounts[key].getBalance();
-        }
+        std::cout << it->second.getBalance() << std::endl;
     }
 }

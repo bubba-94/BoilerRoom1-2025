@@ -10,10 +10,10 @@ private:
     std::map<int, BankAccount> BankAccounts;
 
 public:
-    Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
+    // Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
 
-    void addBankAccount(int amount) {}
-    void displayBankAccount(int id) {}
+    void addBankAccount();
+    void displayBankAccount(int id);
 };
 
 #endif
