@@ -44,3 +44,20 @@ void Bank::displayUserID(int ID)
         std::cout << "The owner of this account is User ID " << it->second.getUserID() << std::endl;
     }
 }
+void Bank::depositToAccount(int ID, int amount)
+{
+    auto it = BankAccounts.find(ID);
+    it->second.deposit(amount);
+    std::cout << "deposited " << amount << " to the account" << std::endl;
+}
+void Bank::withdrawFromAccount(int ID, int amount)
+{
+    auto it = BankAccounts.find(ID);
+    it->second.withdraw(amount);
+    std::cout << "Withdrew " << amount << " to the account" << std::endl;
+}
+void Bank::viewAccount(int ID)
+{
+    auto it = BankAccounts.find(ID);
+    std::cout << "the amount of balance ID " << ID << " owns is " << it->second.getBalance() << std::endl;
+}

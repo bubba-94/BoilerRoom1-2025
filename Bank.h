@@ -1,6 +1,8 @@
 #ifndef BANK_H
 #define BANK_H
 
+#include <map>
+
 class BankAccount;
 class User;
 
@@ -19,6 +21,9 @@ public:
     void addBankAccount(int userID);
     void displayUserID(int UserID);
     void displayBankAccount(int id);
+    void depositToAccount(int accountID, int amount);
+    void withdrawFromAccount(int accountID, int amount);
+    void viewAccount(int ID);
 };
 
 #endif
