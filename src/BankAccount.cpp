@@ -7,6 +7,11 @@ void BankAccount::deposit(int amount)
 }
 void BankAccount::withdraw(int amount)
 {
+    if (amount > balance)
+    {
+        std::cout << "insufficient amount detected for withdrawal, returning" << std::endl;
+        return;
+    }
     balance = balance - amount;
 }
 int BankAccount::getBalance()

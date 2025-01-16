@@ -17,13 +17,14 @@ private:
 public:
     // Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
     Bank();
+    BankAccount getBankAccount(int accountID);
     void addUser(int userID, const std::string &name);
     void addBankAccount(int userID);
     void displayUserID(int UserID);
-    void displayBankAccount(int id);
+    void displayBankAccount(int accountID);
     void depositToAccount(int accountID, int amount);
     void withdrawFromAccount(int accountID, int amount);
-    void viewAccount(int ID);
+    void viewAccount(int accountID);
 };
 
 #endif
