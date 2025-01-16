@@ -1,3 +1,4 @@
+// im abit confused what do i actually need for a unit test? Do i need to write anything more then the catch_config_main do test files need a header file?
 #include <iostream>
 #include <map>
 #include "BankAccount.h"
