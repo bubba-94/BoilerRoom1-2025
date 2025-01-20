@@ -8,8 +8,8 @@
 
 void display(Bank &bank, bool &running){
     while(running == true){
-        std::this_thread::sleep_for(std::chrono::seconds(10));
-        bank.displayBankAccount(randomMapIndex());
+        std::this_thread::sleep_for(std::chrono::seconds(7));
+        bank.displayBankAccounts(randomMapIndex());
     }
 }
 
@@ -30,18 +30,17 @@ int main (){
     // Vector of threads.
     std::vector <std::thread> user_threads;
 
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 10; i++){
         // pushes 10 threads to user_threads using func calling() with &bank parameter.
         user_threads.push_back(std::thread(worker, std::ref(bank), std::ref(running)));
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(35));
+    std::this_thread::sleep_for(std::chrono::seconds(21));
     running = false;
     // join all existing threads inside user_threads
     for (auto &thread : user_threads){
         thread.join();
     }
-    bank.displayBankAccount(randomMapIndex());
     displayAccounts.join();
 
     return 0;

@@ -15,13 +15,14 @@ private:
     std::vector<Client> clients;
     std::map<int, BankAccount> BankAccounts;
     std::mutex bank_mtx;
+    int nextAccountID = 0;
 
 public:
     Bank();
     ~Bank();
 
     void makeTransaction(int amount, int map_index);
-    void displayBankAccount(int account);
+    void displayBankAccounts(int account);
     void addClient();
     void addBankAccount();
 };

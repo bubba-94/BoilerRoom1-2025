@@ -8,6 +8,7 @@
 #include "Client.h"
 
 Bank::Bank(){
+    
     // Constructor creating 5 accounts with random account numbers
     for (int i = 0; i < 5; i++){
         addBankAccount();
@@ -19,8 +20,6 @@ Bank::Bank(){
 
 // Destructor
 Bank::~Bank(){}
-
-//Bank::Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
 
 void Bank::addClient(){
     Client newClient;
@@ -34,19 +33,11 @@ void Bank::addBankAccount()
 {
     // Random amount of money deposited into the account at the start. 
     int amount = randomAmount();
-    int id{};
-    // Exists so that a new key/id value is always generated for the map whenever inserting a user.
-    for (std::map<int, BankAccount>::iterator it = BankAccounts.begin(); it != BankAccounts.end(); ++it)
-    {
-        // Checks previous IDs and increments last one.
-        auto last = std::prev(BankAccounts.end());
-        int lastKey = last->first;
-        id = lastKey + 1;
-    }
-    BankAccounts.insert(std::make_pair(id, BankAccount(amount, randomAccountNumber())));
+    // Next account id starts at 0
+    BankAccounts.insert(std::make_pair(nextAccountID++, BankAccount(amount, randomAccountNumber())));
 }
 
-void Bank::displayBankAccount(int account)
+void Bank::displayBankAccounts(int account)
 {
     std::lock_guard<std::mutex> lock(bank_mtx);
     std::cout << "\n----------------------CURRENT BALANCE----------------------";
@@ -76,41 +67,29 @@ void Bank::makeTransaction(int amount, int map_index){
     int client_index = randomClientIndexInVector();
     int decision = withdrawOrDeposit();
 
+    std::lock_guard<std::mutex>lock(bank_mtx);
     std::map<int, BankAccount>::iterator it = BankAccounts.find(map_index);
+
     if (it != BankAccounts.end()){
         {
+            std::cout << "\nThread (" << std::this_thread::get_id() << ") | ";
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
             // Withdraw
-            if (decision == 1); {
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                {
-                    std::lock_guard<std::mutex> lock(bank_mtx);
-                    std::cout << "\nClient " << clients[client_index].getClientID() << ": withdrew "<< amount << "kr from account: " << it->second.getAccountID(); 
-                    //std::cout << "|\tPrevious balance: " << it -> second.getBalance() << "kr.";
-                    it->second.withdraw(amount);
-                }
-                //std::cout << "|\tNew balance: " << it->second.getBalance() << "kr.";
+            if (decision == 1) { 
+
+                    std::cout << "Client " << clients[client_index].getClientID() << ": withdrew " << 
+                    amount << "kr | From account: " << it->second.getAccountID(); 
+
+                    it->second.withdraw(amount);        
             }
             // Deposit
-            if (decision == 0){
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                {
-                    std::lock_guard<std::mutex> lock(bank_mtx);
-                    std::cout << "\nClient " << clients[client_index].getClientID() << ": deposited "<< amount << "kr to account: " << it->second.getAccountID();
-                    it->second.deposit(amount);
-                }
-                //std::cout << "|\tPrevious balance: " << it -> second.getBalance() << "kr.";
-                //std::cout << "|\tNew balance: " << it->second.getBalance() << "kr.";
+            else if (decision == 0) {
+
+                    std::cout << "Client " << clients[client_index].getClientID() << ": deposited " << 
+                    amount << "kr | To account: " << it->second.getAccountID();
+
+                    it->second.deposit(amount);            
             }
         }
     } 
 }
-/*
-    for (std::map<int, BankAccount>::iterator it = BankAccounts.begin(); it != BankAccounts.end(); ++it)
-    {
-        int key = it->first;
-        if (key == id)
-        {
-            std::cout << BankAccounts[key].getBalance();
-        }
-    }
-*/
