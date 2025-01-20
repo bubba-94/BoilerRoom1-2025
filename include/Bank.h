@@ -24,7 +24,10 @@ public:
     void displayBankAccount(int accountID);
     void depositToAccount(int accountID, int amount);
     void withdrawFromAccount(int accountID, int amount);
+    void printWithdrawal(int accountID, int amount);
+    void printBankAccountCreation(int userID, int id);
     void viewAccount(int accountID);
+    void printDeposit(int accountID, int amount);
 };
 
 #endif

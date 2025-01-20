@@ -6,6 +6,7 @@
 #include "random.h"
 #include "User.h"
 #include "ThreadPool.h"
+#include "coutMutex.h"
 
 int main()
 {
@@ -19,12 +20,13 @@ int main()
     bank.addBankAccount(1); // creates bankasccount 2 coupled with user 1
     bank.addBankAccount(2); // creates bankaccount 3 coupled with user 2
 
+    bank.displayUserID(1); // display who owns the bank account
+    bank.displayUserID(2); // display who owns the bank account
+    bank.displayUserID(3); // display who owns the bank account
+
     bank.displayBankAccount(1); // display bank account 1
     bank.displayBankAccount(2); // display bank account 1
     bank.displayBankAccount(3); // display bank account 1
-    bank.displayUserID(1);      // display who owns the bank account
-    bank.displayUserID(2);      // display who owns the bank account
-    bank.displayUserID(3);      // display who owns the bank account
     bank.viewAccount(1);        // displays how much account has in balance
 
     std::vector<std::pair<int, int>> depositTransactions =
@@ -46,21 +48,26 @@ int main()
     {
         threadPool.submit([&bank, transaction]()
                           {
-            bank.depositToAccount(transaction.first, transaction.second);
-            std::cout << "Deposited " << transaction.second << " to account " << transaction.first << "\n"; });
+                              bank.depositToAccount(transaction.first, transaction.second);
+                              //  std::cout << "Deposited " << transaction.second << " to account " << transaction.first << "\n";
+                          });
     }
     // put withdraws into the pool
     for (const auto &transaction : withdrawTransactions)
     {
         threadPool.submit([&bank, transaction]()
                           {
-            bank.withdrawFromAccount(transaction.first, transaction.second);
-            std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n"; });
+                              bank.withdrawFromAccount(transaction.first, transaction.second);
+                              // std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n";
+                          });
     }
     // waits for the threads to finish (may want to delete this later)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     bank.viewAccount(1); // displays how much account has in balance
+    bank.viewAccount(2); // displays how much account has in balance
+
+    // the threads clearly mess up the std::cout probably due to having a race condition to std::cout, could potentially somehow mutex lock it? Mabye override the original std::cout function?
 
     return 0;
 }

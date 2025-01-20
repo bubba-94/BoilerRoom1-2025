@@ -25,7 +25,6 @@ TEST_CASE("Withdraw Decreases balance", "[BankAccount]")
     REQUIRE(account.getBalance() == 700);
 }
 // test what happens if withdraw is higher then balanace
-// TEST FAILED
 TEST_CASE("withdraw more than Balance", "[BankAccount]")
 {
     BankAccount account(1000, 1, 1);

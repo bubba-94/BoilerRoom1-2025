@@ -7,6 +7,7 @@ private:
     int balance;
     int accountId;
     int userID;
+    void printWithdraw(int amount); // only exists within this cpp file
 
 public:
     // mabye dont want the constructor here but also defined in the cpp file?
