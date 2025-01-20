@@ -1,5 +1,6 @@
 #ifndef BANK_ACCOUNT
 #define BANK_ACCOUNT
+#include <iostream>
 
 class BankAccount
 {
@@ -8,11 +9,11 @@ private:
     int accountId;
 
 public:
-    // mabye dont want the constructor here but also defined in the cpp file?
+    BankAccount();
     BankAccount(int balance, int accountId) : balance(balance), accountId(accountId) {}
-    void deposit(int amount) {}
-    void withdraw(int amount) {}
-    int getBalance() {}
+    void deposit(int amount);
+    void withdraw(int amount);
+    int getBalance();
+    int getAccountID();
 };
-
 #endif

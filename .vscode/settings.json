@@ -45,6 +45,20 @@
         "ostream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "span": "cpp",
+        "sstream": "cpp",
+        "variant": "cpp"
     }
 }

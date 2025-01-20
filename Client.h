@@ -1,12 +1,21 @@
 #ifndef CLIENT_H
 #define CLIENT_H
-#include "BankAccount.h"
+#include "Bank.h"
+#include "Random.h"
+#include <thread>
+#include <vector>
 
-class Client : public BankAccount{
+class BankAccount;
+
+class Client{
 private:
-    
+    int clientID{};
+    // std::unique_ptr<BankAccount> ptr;
 public:
-
+    Client();
+    ~Client();
+    void setClientID();
+    int getClientID();
+    void setPTR();
 };
-
 #endif

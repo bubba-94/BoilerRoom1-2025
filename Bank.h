@@ -1,19 +1,29 @@
 #ifndef BANK_H
 #define BANK_H
+#include "BankAccount.h"
+#include "Client.h"
+#include <map>
+#include <mutex>
+#include <vector>
 
 class BankAccount;
+class Client;
 
 class Bank
 {
 private:
-    // key, BankAccount
+    std::vector<Client> clients;
     std::map<int, BankAccount> BankAccounts;
+    std::mutex bank_mtx;
 
 public:
-    Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
+    Bank();
+    ~Bank();
 
-    void addBankAccount(int amount) {}
-    void displayBankAccount(int id) {}
+    void makeTransaction(int amount, int map_index);
+    void displayBankAccount(int account);
+    void addClient();
+    void addBankAccount();
 };
 
 #endif
