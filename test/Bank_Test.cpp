@@ -34,7 +34,7 @@ TEST_CASE_METHOD(BankTest, "Test bank account creation", "[Bank]")
 TEST_CASE_METHOD(BankTest, "Test deposit functionality", "[Bank]")
 {
     bank.depositToAccount(1, 1000);
-    bank.viewAccount(1);
+    bank.viewAccountBalance(1);
 
     BankAccount account1 = bank.getBankAccount(1);
     REQUIRE(account1.getBalance() == 1000);
@@ -53,7 +53,7 @@ TEST_CASE_METHOD(BankTest, "Test withdrawl larger than balance", "[Bank]")
 TEST_CASE_METHOD(BankTest, "test view account balance", "[Bank]")
 {
     bank.depositToAccount(1, 500);
-    bank.viewAccount(1);
+    bank.viewAccountBalance(1);
 
     BankAccount account1 = bank.getBankAccount(1);
     REQUIRE(account1.getBalance() == 500);

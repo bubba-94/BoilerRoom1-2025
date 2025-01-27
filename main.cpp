@@ -10,25 +10,83 @@
 
 int main()
 {
+    // please refactor the code later so we dont have to make any objects here.
+    User user1(1);
+    User user2(2);
+    User user3(3);
+    User user4(4);
+    User user5(5);
+    User user6(6);
+    User user7(7);
+    User user8(8);
+    User user9(9);
+    User user10(10);
+    // it clearly creates these files properly
+    std::cout << user1.getID();
+    std::cout << std::endl;
+    std::cout << user1.getID();
+    std::cout << std::endl;
     Bank bank;
     ThreadPool threadPool(4);
+    bank.addUser(1, user1);
+    bank.addUser(2, user2);
+    bank.addUser(3, user3);
+    bank.addUser(4, user4);
+    bank.addUser(5, user5);
+    bank.addUser(6, user6);
+    bank.addUser(7, user7);
+    bank.addUser(8, user8);
+    bank.addUser(9, user9);
+    bank.addUser(10, user10);
 
-    bank.addUser(1, "iko");  // create a user named IKO with UserID 1
-    bank.addUser(2, "ikea"); // create a user named ikea with UserID 2
-
-    bank.addBankAccount(1); // creates bankaccount 1 coupled with user 1
-    bank.addBankAccount(1); // creates bankasccount 2 coupled with user 1
-    bank.addBankAccount(2); // creates bankaccount 3 coupled with user 2
-
-    bank.displayUserID(1); // display who owns the bank account
-    bank.displayUserID(2); // display who owns the bank account
-    bank.displayUserID(3); // display who owns the bank account
-
-    bank.displayBankAccount(1); // display bank account 1
-    bank.displayBankAccount(2); // display bank account 1
-    bank.displayBankAccount(3); // display bank account 1
-    bank.viewAccount(1);        // displays how much account has in balance
-
+    // should create 10 bank accounts
+    /*for (int i = 0; i < 10; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        bank.addUser(i, "");
+    } */
+    // couple 2 users to every bank account
+    bank.addBankAccount({1, 2});
+    bank.addBankAccount({3, 4});
+    bank.addBankAccount({5, 6});
+    bank.addBankAccount({7, 8});
+    bank.addBankAccount({9, 10});
+    /*
+    for (int j = 5; j < 5; j++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        bank.addBankAccount(j);
+    } */
+    /*for (int j = 5; j < 5; j++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        bank.displayUserID(j);
+    } */
+    bank.displayUserID(1);
+    bank.displayUserID(2);
+    bank.displayUserID(3);
+    bank.displayUserID(4);
+    bank.displayUserID(5);
+    for (int j = 5; j < 5; j++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        bank.displayBankAccount(j);
+    }
+    bank.displayBankAccount(1);
+    bank.displayBankAccount(2);
+    bank.displayBankAccount(3);
+    bank.displayBankAccount(4);
+    bank.displayBankAccount(5);
+    for (int j = 5; j < 5; j++)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        bank.viewAccountBalance(j);
+    }
+    bank.viewAccountBalance(1);
+    bank.viewAccountBalance(2);
+    bank.viewAccountBalance(3);
+    bank.viewAccountBalance(4);
+    bank.viewAccountBalance(5);
     std::vector<std::pair<int, int>> depositTransactions =
         {
             {1, 100},
@@ -64,8 +122,11 @@ int main()
     // waits for the threads to finish (may want to delete this later)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    bank.viewAccount(1); // displays how much account has in balance
-    bank.viewAccount(2); // displays how much account has in balance
+    bank.viewAccountBalance(1);
+    bank.viewAccountBalance(2);
+    bank.viewAccountBalance(3);
+    bank.viewAccountBalance(4);
+    bank.viewAccountBalance(5);
 
     // the threads clearly mess up the std::cout probably due to having a race condition to std::cout, could potentially somehow mutex lock it? Mabye override the original std::cout function?
 

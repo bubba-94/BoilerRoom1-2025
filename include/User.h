@@ -18,7 +18,7 @@ public:
     // default constructor
     User() : userID(0), name("") {}
     // requires a ID (int) and a name (string)
-    User(int userID, std::string name) : userID(userID), name(name) {}
+    User(int userID) : userID(userID) {}
 
     int getID();
     std::string getName();

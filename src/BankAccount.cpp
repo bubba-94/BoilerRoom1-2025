@@ -25,7 +25,11 @@ int BankAccount::getBalance()
 {
     return balance;
 }
-int BankAccount::getUserID()
+std::unordered_set<int> BankAccount::getUserIDs()
 {
-    return userID;
+    return userIDs;
+}
+void BankAccount::addUser(int userID)
+{
+    userIDs.insert(userID);
 }

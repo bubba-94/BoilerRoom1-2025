@@ -11,9 +11,10 @@ Bank::Bank()
     nextAccountID = 1;
 }
 
-void Bank::addUser(int userID, const std::string &name)
+//
+void Bank::addUser(int userID, const User &user)
 {
-    Users[userID] = User(userID, name);
+    Users[userID] = User(userID);
 }
 
 BankAccount Bank::getBankAccount(int accountID)
@@ -32,40 +33,75 @@ BankAccount Bank::getBankAccount(int accountID)
 }
 
 // requires a userID
-void Bank::addBankAccount(int userID)
+void Bank::addBankAccount(const std::vector<int> &userIDs)
 {
     int amount = 0;
     // int amount = randomAmount(); // it was messing with the tast cases thereby has been commentated out
-    int id = nextAccountID++; // nextAccountID is just a counter that increases
-    BankAccount newAccount(amount, id, userID);
-    BankAccounts.insert(std::make_pair(id, newAccount)); // insert a new account
+    int AccountID = nextAccountID++; // nextAccountID is just a counter that increases
+    // doesnt suit
+    BankAccount newAccount(amount, AccountID);
+    for (int userID : userIDs)
+    {
+        // in realtiy it should be bank account that has the adduser class rather then bank
+        newAccount.addUser(userID);
+    }
+    BankAccounts.emplace(AccountID, newAccount);
     // just debug message
-    printBankAccountCreation(userID, id);
+    printBankAccountCreation(userIDs, AccountID);
 }
-void Bank::printBankAccountCreation(int userID, int id)
+void Bank::printBankAccountCreation(const std::vector<int> &userIDs, int AccountID)
 {
     std::lock_guard<std::mutex> guard(coutMutex);
-    std::cout << "created Bank Account with " << "ID " << id << " and User ID " << userID << std::endl;
+    std::cout << "created Bank Account with " << "ID " << AccountID << " and User IDs ";
+    for (int userID : userIDs)
+    {
+        std::cout << userID << " ";
+    }
+    std::cout << std::endl;
 }
 
 // ID for bank account
-void Bank::displayBankAccount(int accountID)
-{
-    auto it = BankAccounts.find(accountID);
-    if (it != BankAccounts.end())
-    {
-        std::lock_guard<std::mutex> guard(coutMutex);
-        std::cout << "balance is " << it->second.getBalance() << " for account " << accountID << std::endl;
-    }
-}
-// ID for User
 void Bank::displayUserID(int accountID)
 {
     auto it = BankAccounts.find(accountID);
     if (it != BankAccounts.end())
     {
         std::lock_guard<std::mutex> guard(coutMutex);
-        std::cout << "The owner of the account " << accountID << " is User ID " << it->second.getUserID() << std::endl;
+        std::unordered_set<int> userIDs = it->second.getUserIDs();
+
+        // Print the user's associated with this account
+        std::cout << "Associated user(s) for account " << accountID << ": ";
+        for (int userID : userIDs) // Iterate through the user IDs
+        {
+            std::cout << userID << " "; // Print each user ID
+        }
+        std::cout << std::endl;
+    }
+}
+void Bank::displayBankAccount(int accountID) // currently displays both balance and users associated do we want this?
+{
+    auto it = BankAccounts.find(accountID); // Find the account by accountID
+    if (it != BankAccounts.end())           // Check if the account exists
+    {
+        std::lock_guard<std::mutex> guard(coutMutex); // Protect console output with mutex
+
+        // Print the balance of the account
+        std::cout << "Balance is " << it->second.getBalance() << " for account " << accountID << std::endl;
+
+        // Retrieve the associated user IDs for this account
+        std::unordered_set<int> userIDs = it->second.getUserIDs();
+
+        // Print the user's associated with this account
+        std::cout << "Associated user(s) for account " << accountID << ": ";
+        for (int userID : userIDs) // Iterate through the user IDs
+        {
+            std::cout << userID << " "; // Print each user ID
+        }
+        std::cout << std::endl;
+    }
+    else
+    {
+        std::cout << "Account with ID " << accountID << " not found!" << std::endl;
     }
 }
 void Bank::depositToAccount(int accountID, int amount)
@@ -92,7 +128,7 @@ void Bank::printWithdrawal(int accountID, int amount)
     std::cout << "Withdrew " << amount << " to the account " << accountID << std::endl;
 }
 
-void Bank::viewAccount(int accountID)
+void Bank::viewAccountBalance(int accountID)
 {
     auto it = BankAccounts.find(accountID);
     std::lock_guard<std::mutex> guard(coutMutex);
