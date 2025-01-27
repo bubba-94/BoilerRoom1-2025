@@ -135,15 +135,7 @@ int main()
                               // std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n";
                           });
     }
-    // need a conditional variable here as the thread might exit early
-    /*
-    The intent of a conditional variable is to provide a mechanism for synchronizing threads based on specific conditions or states within a program.
-    It allows threads to wait until a certain condition becomes true and notify other threads when the condition is met, facilitating safe and efficient coordination between threads.
-    It is the IF statement of threads.
-    */
-
-    // waits for the threads to finish (may want to delete this later)
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    threadPool.waitForCompletion(); // syncs threadPool with Main by waiting for threads to finish before proceeding
 
     bank.viewAccountBalance(1);
     bank.viewAccountBalance(2);

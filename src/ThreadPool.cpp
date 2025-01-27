@@ -31,6 +31,7 @@ void ThreadPool::submit(std::function<void()> task)
     {
         std::lock_guard<std::mutex> lock(queueMutex);
         tasks.push(task); // add task to queue
+        taskCount++;
     }
     condition.notify_one(); // notify a thread to start working
 }
@@ -57,5 +58,15 @@ void ThreadPool::worker()
         }
         // execute the task
         task();
+        taskCount--;
+    }
+}
+
+// used to sync main with ThreadPool
+void ThreadPool::waitForCompletion()
+{
+    while (taskCount > 0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

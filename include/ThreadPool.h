@@ -6,6 +6,7 @@
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <atomic>
 
 class ThreadPool
 {
@@ -15,6 +16,8 @@ public:
 
     void submit(std::function<void()> task); // exists for submitting to the worker thread
 
+    void waitForCompletion();
+
 private:
     void worker();
 
@@ -23,6 +26,7 @@ private:
     std::mutex queueMutex;                   // for syncing
     std::condition_variable condition;       // also for syncing
     bool stop;                               // flag for stopping the pool
+    std::atomic<int> taskCount;              // used to sync main with thread pool
 };
 
 #endif
