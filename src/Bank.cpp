@@ -39,7 +39,7 @@ void Bank::addBankAccount(const std::vector<int> &userIDs)
     // int amount = randomAmount(); // it was messing with the tast cases thereby has been commentated out
     int AccountID = nextAccountID++; // nextAccountID is just a counter that increases
     // doesnt suit
-    BankAccount newAccount(amount, AccountID);
+    BankAccount newAccount(AccountID);
     for (int userID : userIDs)
     {
         // in realtiy it should be bank account that has the adduser class rather then bank
