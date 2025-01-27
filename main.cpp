@@ -89,14 +89,14 @@ int main()
     bank.viewAccountBalance(5);
     std::vector<std::pair<int, int>> depositTransactions =
         {
-            {1, 100},
+            {1, 150000},
             {2, 200},
             {1, 50},
             {2, 300},
         };
     std::vector<std::pair<int, int>> withdrawTransactions =
         {
-            {1, 30},
+            {1, 90000},
             {2, 100},
             {1, 10},
             {2, 50},
@@ -119,6 +119,8 @@ int main()
                               // std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n";
                           });
     }
+    bank.transferAmountToBankAccount(2, 1, 300); // may want to add a comment to this
+
     // waits for the threads to finish (may want to delete this later)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 

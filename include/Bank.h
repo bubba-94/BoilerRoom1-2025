@@ -14,7 +14,6 @@ private:
     // key, BankAccount
     std::map<int, User> Users;
     std::map<int, BankAccount> BankAccounts;
-    // std::map<int, User> Users;
     int nextAccountID;
 
 public:
@@ -31,6 +30,7 @@ public:
     void viewAccountBalance(int accountID);
     void printDeposit(int accountID, int amount);
     void addUser(int userID, const User &user);
+    void transferAmountToBankAccount(int accountID, int accountID2, int amount);
 };
 
 #endif

@@ -110,6 +110,8 @@ void Bank::depositToAccount(int accountID, int amount)
     it->second.deposit(amount);
     printDeposit(accountID, amount);
 }
+
+// mabye this should be in bankaccount instead
 void Bank::printDeposit(int accountID, int amount)
 {
     std::lock_guard<std::mutex> guard(coutMutex);
@@ -122,6 +124,19 @@ void Bank::withdrawFromAccount(int accountID, int amount)
     it->second.withdraw(amount);
     printWithdrawal(accountID, amount);
 }
+// allows the transference of funds between two bank accounts
+void Bank::transferAmountToBankAccount(int accountID, int accountID2, int amount)
+{
+    auto it = BankAccounts.find(accountID);
+    auto it2 = BankAccounts.find(accountID2);
+    if (it2 != BankAccounts.end())
+    {
+        BankAccount &account = it2->second; // gets the reference to a preexisting bankaccount object
+        it->second.transferAmount(account, amount);
+    }
+}
+
+// mabye this should be in bankaccount instead
 void Bank::printWithdrawal(int accountID, int amount)
 {
     std::lock_guard<std::mutex> guard(coutMutex);
