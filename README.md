@@ -25,3 +25,4 @@ Använd std::thread för att skapa flera kunder som körs samtidigt.
 Implementera minst 5 konton och 10 kunder som körs parallellt.
 Varje kund ska utföra slumpmässiga transaktioner (insättningar eller uttag).
 Skriv ut kontosaldon efter att alla kunder har slutfört sina transaktioner.
+
