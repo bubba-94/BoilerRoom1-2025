@@ -39,6 +39,7 @@ void ThreadPool::worker()
 {
     while (true)
     {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         std::function<void()> task;
         {
             std::unique_lock<std::mutex> lock(queueMutex);

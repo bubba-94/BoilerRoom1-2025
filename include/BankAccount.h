@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include <unordered_set>
+#include <vector>
 
 // could need a reference to userIDs within bankaccount use a map instead of the int userid we currently use and define the function addUser
 
@@ -29,8 +30,8 @@ public:
     int getBalance();
     std::unordered_set<int> getUserIDs(); // no defintion right now
     std::vector<int> getTransactions();   // no defintion right now
-    int BankAccount::TotalWithdraw();
-    int BankAccount::TotalDeposits();
+    int TotalWithdraw();
+    int TotalDeposits();
     void transferAmount(BankAccount &accountID, int amount); // might not work because we are looking for ID's rather then objects
     bool maxAmountTransference(int amount);
 };

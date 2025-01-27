@@ -10,6 +10,8 @@
 
 int main()
 {
+    ThreadPool threadPool(2);
+    Bank bank;
     // please refactor the code later so we dont have to make any objects here.
     User user1(1);
     User user2(2);
@@ -21,13 +23,6 @@ int main()
     User user8(8);
     User user9(9);
     User user10(10);
-    // it clearly creates these files properly
-    std::cout << user1.getID();
-    std::cout << std::endl;
-    std::cout << user1.getID();
-    std::cout << std::endl;
-    Bank bank;
-    ThreadPool threadPool(4);
     bank.addUser(1, user1);
     bank.addUser(2, user2);
     bank.addUser(3, user3);
@@ -89,17 +84,29 @@ int main()
     bank.viewAccountBalance(5);
     std::vector<std::pair<int, int>> depositTransactions =
         {
-            {1, 150000},
+            {1, 300},
             {2, 200},
             {1, 50},
             {2, 300},
+            {3, 300},
+            {4, 300},
+            {5, 300},
         };
     std::vector<std::pair<int, int>> withdrawTransactions =
         {
-            {1, 90000},
+            {1, 200},
             {2, 100},
             {1, 10},
             {2, 50},
+            {3, 50},
+            {4, 50},
+            {5, 50},
+        };
+    // bank.transferAmountToBankAccount(2, 1, 300); // may want to add a comment to this
+    std::vector<std::tuple<int, int, int>> transferFromAccountToAccount =
+        {
+            // accountID1, accountID2, amount
+            // {2, 1, 300},
         };
     // put deposit into the pool
     for (const auto &transaction : depositTransactions)
@@ -119,7 +126,21 @@ int main()
                               // std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n";
                           });
     }
-    bank.transferAmountToBankAccount(2, 1, 300); // may want to add a comment to this
+    for (const auto &transaction : transferFromAccountToAccount)
+    {
+        threadPool.submit([&bank, transaction]()
+                          {
+                              // bank.transferAmountToBankAccount(transaction.first, transaction.second, transaction.third);
+                              // bank.transferAmountToBankAccount(std::get<0>(transaction), std::get<1>(transaction), std::get<2>(transaction));
+                              // std::cout << "Withdrew " << transaction.second << " from account " << transaction.first << "\n";
+                          });
+    }
+    // need a conditional variable here as the thread might exit early
+    /*
+    The intent of a conditional variable is to provide a mechanism for synchronizing threads based on specific conditions or states within a program.
+    It allows threads to wait until a certain condition becomes true and notify other threads when the condition is met, facilitating safe and efficient coordination between threads.
+    It is the IF statement of threads.
+    */
 
     // waits for the threads to finish (may want to delete this later)
     std::this_thread::sleep_for(std::chrono::seconds(2));
