@@ -3,6 +3,6 @@
 
 #include <mutex>
 
-extern std::mutex coutMutex; // being defined here grants global access to it by any
+extern std::mutex coutMutex; // being defined here grants global access to it by any class
 
 #endif

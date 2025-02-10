@@ -4,8 +4,8 @@
 
 BankAccount::BankAccount(int balance, int accountId) : balance(balance), accountId(accountId)
 {
-    locked = false;     // initalize locked as false
-    maxAmount = 100000; // initialize max amount as 100000 for the account
+    lockAccount = false; // initalize locked as false
+    maxAmount = 100000;  // initialize max amount as 100000 for the account
 }
 
 void BankAccount::deposit(int amount)
@@ -15,23 +15,23 @@ void BankAccount::deposit(int amount)
 void BankAccount::withdraw(int amount)
 {
     // checks whether the transaction is valid
-    locked = maxAmountTransference(amount);
+    lockAccount = isTransferAllowed(amount);
 
-    if (locked == true)
+    if (lockAccount == true)
     {
         return;
     }
 
     if (amount > balance)
     {
-        printWithdraw();
+        printInsufficientFundsMessage();
         return;
     }
     balance = balance - amount;
 }
-void BankAccount::printWithdraw() // only exists within this cpp file
+void BankAccount::printInsufficientFundsMessage() // only exists within this cpp file
 {
-    std::lock_guard<std::mutex> guard(coutMutex);
+    std::lock_guard<std::mutex> guard(coutMutex); // guards the std::cout from race conditions
     std::cout << "insufficient amount detected for withdrawal, returning" << std::endl;
 }
 
@@ -52,25 +52,27 @@ void BankAccount::addUser(int userID)
 void BankAccount::transferAmount(BankAccount &accountID, int amount)
 {
     // checks whether the transaction is valid
-    locked = maxAmountTransference(amount);
+    lockAccount = isTransferAllowed(amount);
 
-    if (locked == true)
+    if (lockAccount == true)
     {
         return;
     }
 
     if (amount > this->balance)
     {
-        printWithdraw();
+        printInsufficientFundsMessage();
         return;
     }
 
-    // may want a comment here what amounts got transfered
-    this->balance -= amount; // "this" connects to the current object its on.
-    accountID.balance += amount;
+    // Withdraw from the current account
+    this->withdraw(amount);
+
+    // Deposit into the target account
+    accountID.deposit(amount);
 }
 
-bool BankAccount::maxAmountTransference(int amount)
+bool BankAccount::isTransferAllowed(int amount)
 {
 
     if (amount > maxAmount)
@@ -81,27 +83,49 @@ bool BankAccount::maxAmountTransference(int amount)
     maxAmount -= amount;
     return false;
 }
-int BankAccount::TotalWithdraw()
+
+// added the parameter int amount to increase the clarity in what the function does
+int BankAccount::logWithdraw(int amount)
+{
+    if (amount > 0) // error handleing
+    {
+        transactions.push_back(-amount);
+    }
+}
+
+// added the parameter int amount to increase the clarity in what the function does
+// removed majority of the code, refactorizing it
+int BankAccount::logDeposits(int amount)
+{
+    if (amount > 0) // error handleing
+    {
+        transactions.push_back(amount);
+    }
+}
+
+// Returns the total amount of all deposits
+int BankAccount::getTotalDeposits()
 {
     int total = 0;
-    for (int i = 0; i < this->transactions.size(); i++)
+    for (int amount : transactions)
     {
-        if (this->transactions[i] < 0)
-        {
-            total += this->transactions[i];
+        if (amount > 0)
+        { // sums up deposits
+            total += amount;
         }
     }
     return total;
 }
 
-int BankAccount::TotalDeposits()
+// Returns the total amount of all withdraws
+int BankAccount::getTotalWithdraws()
 {
     int total = 0;
-    for (int i = 0; i < this->transactions.size(); i++)
+    for (int amount : transactions)
     {
-        if (this->transactions[i] < 0)
-        {
-            total += this->transactions[i];
+        if (amount < 0)
+        { // sums up deposits with a negative value
+            total += -amount;
         }
     }
     return total;

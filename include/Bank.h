@@ -12,12 +12,11 @@ class Bank
 {
 private:
     // key, BankAccount
-    std::map<int, User> Users;
-    std::map<int, BankAccount> BankAccounts;
+    std::map<int, User> registeredUsers;
+    std::map<int, BankAccount> activeBankAccounts;
     int nextAccountID;
 
 public:
-    // Bank(std::map<int, BankAccount> BankAccounts) : BankAccounts(BankAccounts) {}
     Bank();
     BankAccount getBankAccount(int accountID);
     void addBankAccount(const std::vector<int> &userIDs);

@@ -14,13 +14,13 @@ Bank::Bank()
 //
 void Bank::addUser(int userID, const User &user)
 {
-    Users[userID] = User(userID);
+    registeredUsers[userID] = User(userID);
 }
 
 BankAccount Bank::getBankAccount(int accountID)
 {
-    auto it = BankAccounts.find(accountID);
-    if (it != BankAccounts.end())
+    auto it = activeBankAccounts.find(accountID);
+    if (it != activeBankAccounts.end())
     {
         return it->second; // returns the BankAccount Object
     }
@@ -45,10 +45,11 @@ void Bank::addBankAccount(const std::vector<int> &userIDs)
         // in realtiy it should be bank account that has the adduser class rather then bank
         newAccount.addUser(userID);
     }
-    BankAccounts.emplace(AccountID, newAccount);
+    activeBankAccounts.emplace(AccountID, newAccount);
     // just debug message
     printBankAccountCreation(userIDs, AccountID);
 }
+
 void Bank::printBankAccountCreation(const std::vector<int> &userIDs, int AccountID)
 {
     std::lock_guard<std::mutex> guard(coutMutex);
@@ -63,8 +64,8 @@ void Bank::printBankAccountCreation(const std::vector<int> &userIDs, int Account
 // ID for bank account
 void Bank::displayUserID(int accountID)
 {
-    auto it = BankAccounts.find(accountID);
-    if (it != BankAccounts.end())
+    auto it = activeBankAccounts.find(accountID);
+    if (it != activeBankAccounts.end())
     {
         std::lock_guard<std::mutex> guard(coutMutex);
         std::unordered_set<int> userIDs = it->second.getUserIDs();
@@ -78,10 +79,11 @@ void Bank::displayUserID(int accountID)
         std::cout << std::endl;
     }
 }
+
 void Bank::displayBankAccount(int accountID) // currently displays both balance and users associated do we want this?
 {
-    auto it = BankAccounts.find(accountID); // Find the account by accountID
-    if (it != BankAccounts.end())           // Check if the account exists
+    auto it = activeBankAccounts.find(accountID); // Find the account by accountID
+    if (it != activeBankAccounts.end())           // Check if the account exists
     {
         std::lock_guard<std::mutex> guard(coutMutex); // Protect console output with mutex
 
@@ -104,9 +106,10 @@ void Bank::displayBankAccount(int accountID) // currently displays both balance 
         std::cout << "Account with ID " << accountID << " not found!" << std::endl;
     }
 }
+
 void Bank::depositToAccount(int accountID, int amount)
 {
-    auto it = BankAccounts.find(accountID);
+    auto it = activeBankAccounts.find(accountID);
     it->second.deposit(amount);
     printDeposit(accountID, amount);
 }
@@ -120,16 +123,17 @@ void Bank::printDeposit(int accountID, int amount)
 
 void Bank::withdrawFromAccount(int accountID, int amount)
 {
-    auto it = BankAccounts.find(accountID);
+    auto it = activeBankAccounts.find(accountID);
     it->second.withdraw(amount);
     printWithdrawal(accountID, amount);
 }
+
 // allows the transference of funds between two bank accounts
 void Bank::transferAmountToBankAccount(int accountID, int accountID2, int amount)
 {
-    auto it = BankAccounts.find(accountID);
-    auto it2 = BankAccounts.find(accountID2);
-    if (it2 != BankAccounts.end())
+    auto it = activeBankAccounts.find(accountID);
+    auto it2 = activeBankAccounts.find(accountID2);
+    if (it2 != activeBankAccounts.end())
     {
         BankAccount &account = it2->second; // gets the reference to a preexisting bankaccount object
         it->second.transferAmount(account, amount);
@@ -145,7 +149,7 @@ void Bank::printWithdrawal(int accountID, int amount)
 
 void Bank::viewAccountBalance(int accountID)
 {
-    auto it = BankAccounts.find(accountID);
+    auto it = activeBankAccounts.find(accountID);
     std::lock_guard<std::mutex> guard(coutMutex);
     std::cout << "the amount of balance ID " << accountID << " owns is " << it->second.getBalance() << std::endl;
 }

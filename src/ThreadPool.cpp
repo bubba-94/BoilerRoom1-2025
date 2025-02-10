@@ -40,7 +40,7 @@ void ThreadPool::worker()
 {
     while (true)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(3)); // an added delay to simulate transactions coming in
         std::function<void()> task;
         {
             std::unique_lock<std::mutex> lock(queueMutex);
