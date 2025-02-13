@@ -11,7 +11,7 @@
 int main()
 {
     ThreadPool threadPool(2);
-    Bank bank;
+    Bank &bank = Bank::getBankInstance(); // gets the singleton instance of Bank that is created when the program is initialized
     // please refactor the code later so we dont have to make any objects here.
     User user1(1);
     User user2(2);

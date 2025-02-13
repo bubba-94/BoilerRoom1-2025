@@ -26,8 +26,8 @@ public:
     int getBalance();
     std::unordered_set<int> getUserIDs(); // no defintion right now
     std::vector<int> getTransactions();   // no defintion right now
-    int logWithdraw(int amount);
-    int logDeposits(int amount);
+    void logWithdraw(int amount);
+    void logDeposits(int amount);
     int getTotalDeposits();
     int getTotalWithdraws();
     void transferAmount(BankAccount &accountID, int amount);

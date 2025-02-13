@@ -1,28 +1,60 @@
-# BoilerRoom1-2025
-First school group assignment of 2025, a multithreaded bankingsystem.
+# BoilerRoom1-2025: Multithreaded Banking System
 
-The goal of the project is to simulate a basic banking system that handles multiple customers performing transactions (deposits, withdrawals, balance checks) simultaneously. The system must use multithreading to simulate concurrent customers and synchronization techniques to ensure the integrity of shared resources (e.g., account balances).
+# Project Overview
+BoilerRoom1-2025 is a multithreaded banking system designed to simulate multiple customers performing various banking transactions (deposits, withdrawals, and balance checks) concurrently. Using multithreading and synchronization techniques.
 
-Session 1: Bygga grunden (Vecka 1)
-Mål:
-Implementera ett grundläggande banksystem med kontohantering med hjälp av trådar för att hantera flera kunder som utför transaktioner
-samtidigt.
-Instruktioner för Session 1:
-Uppgift: Skapa ett banksystem med flertådiga kunder
-1. Skapa en BankAccount-klass
-Attribut: balance (int), accountNumber (int)
-Metoder:
-deposit(int amount)
-withdraw(int amount)
-getBalance()
-2. Skapa en Bank-klass
-Hantera flera konton i en std::map<int, BankAccount> .
-Implementera metoder för att lägga till konton och hämta kontouppgifter.
-3. Simulera kunder med hjälp av trådar
-Skapa en funktion Client som simulerar en kund som utför transaktioner på ett slumpmässigt konto.
-Använd std::thread för att skapa flera kunder som körs samtidigt.
-4. Krav:
-Implementera minst 5 konton och 10 kunder som körs parallellt.
-Varje kund ska utföra slumpmässiga transaktioner (insättningar eller uttag).
-Skriv ut kontosaldon efter att alla kunder har slutfört sina transaktioner.
+# Table of Contents
 
+    1.Features
+    2. System Requirements
+    3. Installation
+    4. Usage
+    5. Project Structure
+    6. Code Example
+    7. Future Enhancements
+    8. License
+
+# Features
+
+* Multithreading: Simulate concurrent customers performing transactions such as (deposit, withdrwals) within bank accounts
+* Account Management: Support banking operations such as deposit, whtdrwaing and balance checking functions
+* Synchronization: Ensure that the system is in a threas safe enviroment maintaing account integrity
+* Balance Tracking: Display account balances after transaction are completed
+
+# System Requirements
+C++ c17 compiler support (g++)
+Operating system such as Windows, Linux, macOS
+
+# Installation
+Git clone https://github.com/bubba-94/BoilerRoom1-2025.git
+
+Navigate to the directory it was installed and open main.cpp
+
+Run the program through main.cpp using the non test version.
+
+# Usage
+Once the program has started it will print out different instructions that the program has been doing where this can be adjusted within int main. 
+Right now its currently running 5 accounts with 10 users.
+
+# Project Structure
+├── main.cpp              # Main entry point of the program
+├── BankAccount.h         # Definition of BankAccount class (deposit, withdraw, getBalance)
+├── Bank.h                # Definition of Bank class (manage accounts and bankaccount)
+├── User.h                # User ID and Name
+├── ThreadPool.h          # Handles thread logic ensuring concurrency
+├── README.md             # Documentation for the project
+
+
+# code example
+
+
+# future Enchantments
+* Allows users to authorize with a username and password
+* Expand the logging systems
+* refactor Main.cpp
+* Remove the concept of User Objects
+* Incorporate rollback mechanicsms in case of error during transactions.
+* User interface for users to interact with the system
+
+# License
+Under the MIT license

@@ -85,7 +85,7 @@ bool BankAccount::isTransferAllowed(int amount)
 }
 
 // added the parameter int amount to increase the clarity in what the function does
-int BankAccount::logWithdraw(int amount)
+void BankAccount::logWithdraw(int amount)
 {
     if (amount > 0) // error handleing
     {
@@ -95,7 +95,7 @@ int BankAccount::logWithdraw(int amount)
 
 // added the parameter int amount to increase the clarity in what the function does
 // removed majority of the code, refactorizing it
-int BankAccount::logDeposits(int amount)
+void BankAccount::logDeposits(int amount)
 {
     if (amount > 0) // error handleing
     {

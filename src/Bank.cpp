@@ -6,12 +6,19 @@
 #include "User.h"
 #include "coutMutex.h"
 
-Bank::Bank()
+// Initialize the instance statically (eager initialization)
+Bank Bank::bankInstance; // This creates the Bank instance right here
+
+Bank::Bank() : nextAccountID(1)
 {
-    nextAccountID = 1;
 }
 
-//
+// Get the Singleton instance of Bank
+Bank &Bank::getBankInstance()
+{
+    return bankInstance;
+}
+
 void Bank::addUser(int userID, const User &user)
 {
     registeredUsers[userID] = User(userID);
